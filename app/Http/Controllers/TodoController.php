@@ -52,11 +52,13 @@ class TodoController extends Controller
    function updateTodo(Request $request, $id){
 
          $request->merge(['todo_id' => $id]);
+
+         $this->validate($request,[
+            'todo_id' => 'required|exists:todos,id'
+          ]);
+
          $todo = Todo::find($id);
 
-         if(!$todo){
-            return response()->json(['message' => 'usuário não encontrado'],404);
-         }
 
          $todo->update($request->all());
 
