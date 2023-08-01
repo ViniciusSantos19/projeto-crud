@@ -23,7 +23,7 @@ class TodoController extends Controller
       return response()->json(['message' => 'resposta'],201);
    }
 
-   function getTodo(int $todo){
+  public function getTodo(int $todo){
       
       $todo = Todo::find($todo);
 
@@ -35,7 +35,7 @@ class TodoController extends Controller
 
    }
 
-   function deleteTodo(Request $request, $id){
+   public function deleteTodo(Request $request, $id){
 
       $request->merge(['todo_id' => $id]);
 
@@ -49,7 +49,7 @@ class TodoController extends Controller
       return response()->json(['message' => 'usário deletado com sucesso'], 204);
    }
 
-   function updateTodo(Request $request, $id){
+  public function updateTodo(Request $request, $id){
 
          $request->merge(['todo_id' => $id]);
 
@@ -64,6 +64,28 @@ class TodoController extends Controller
 
          return response()->json(['message' => 'Tarefa atualizado com sucesso']);
 
+   }
+
+   public function postTodoStatus(Request $request, int $id, string $status){
+      
+      if(!$this->validateAvaliableStatus($status)){
+         return response()->json(['message' => 'avaliable status: done, undone'],422);
+      }
+
+      $todo = Todo::find($id);
+
+      if(!$todo){
+         return response()->json(['message' => 'not found'], 404);
+      }
+
+      $todo->done();
+
+      return response()->json($todo);
+
+   }
+
+   private function validateAvaliableStatus(string $status){
+      return in_array($status, ['done','undone']);
    }
 
 }

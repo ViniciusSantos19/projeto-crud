@@ -19,6 +19,7 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => 'todos'], function ($router) {
     $router->post('/', 'TodoController@postTodo');
+    $router->post('/{id}/status/{status}', 'TodoController@postTodoStatus');
     $router->get('/{todo}', 'TodoController@getTodo');
     $router->delete('/{id}', 'TodoController@deleteTodo');
     $router->put('/{id}', 'TodoController@updateTodo');
