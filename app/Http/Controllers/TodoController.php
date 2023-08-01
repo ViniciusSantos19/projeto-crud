@@ -78,7 +78,11 @@ class TodoController extends Controller
          return response()->json(['message' => 'not found'], 404);
       }
 
-      $todo->done();
+      if($status == 'done'){
+         $todo->done();
+      }else{
+         $todo->undone();
+      }
 
       return response()->json($todo);
 

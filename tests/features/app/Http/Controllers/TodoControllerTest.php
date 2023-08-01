@@ -63,7 +63,7 @@ class TodoControllerTest extends TestCase {
    }
 
 
-   function testIfTheUserCanUpdateATodo(){
+   public function testIfTheUserCanUpdateATodo(){
 
         $todo = Todo::factory()->create();
 
@@ -79,7 +79,7 @@ class TodoControllerTest extends TestCase {
 
    }
 
-   function testIfUserCanDeleteATodo(){
+  public function testIfUserCanDeleteATodo(){
         
         $todo = Todo::factory()->create();
 
@@ -93,7 +93,7 @@ class TodoControllerTest extends TestCase {
 
    }
 
-   function testUserCanSetDone(){
+  public function testUserCanSetDone(){
 
         $todo = Todo::factory()->create();
 
@@ -108,7 +108,22 @@ class TodoControllerTest extends TestCase {
 
    }
 
-   function testUserShouldRecive204WhenTodoNotFound(){
+   public function testCanSetTodoUndone(){
+
+        $todo = Todo::factory()->create(['done' => true]);
+
+        $response = $this->post('/todos/' .$todo->id. '/status/undone');
+
+        $response->assertResponseStatus(200);
+
+        $this->seeInDatabase('todos',[
+            'id' => $todo->id,
+            'done' => false
+        ]);
+
+   }
+
+   public function testUserShouldRecive204WhenTodoNotFound(){
 
         $response = $this->get('/todos/1221');
 
